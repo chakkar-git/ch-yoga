@@ -2,8 +2,6 @@
 
   - - - -
 
-
-          **Features**
           * Fully functional portable Yoga Mats
           * Resmon: 0.00 ms
           * Customizable config - change items and stress reduction value
