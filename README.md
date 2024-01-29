@@ -2,17 +2,19 @@
 
   - - - -
 
-##Features##
 
+          **Features**
           * Fully functional portable Yoga Mats
           * Resmon: 0.00 ms
           * Customizable config - change items and stress reduction value
           * Checks for premature animation cancelling etc. 
 
-##Preview##
+**Preview**
+
 https://www.youtube.com/watch?v=5e3C7SwLTPU
 
-##Dependencies##
+**Dependencies**
+
 This script was made with qb-target in mind. Although, it should work with every targeting script. 
 
   - - - -
