@@ -11,6 +11,10 @@
 
 https://www.youtube.com/watch?v=5e3C7SwLTPU
 
+**Discord**
+
+https://discord.gg/chscripts
+
 **Dependencies**
 
 This script was made with qb-target in mind. Although, it should work with every targeting script. 
