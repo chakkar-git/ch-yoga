@@ -78,11 +78,8 @@ end)
 
 -- Yoga
 
-local isYogaAnimationPlaying = false 
-
-function IsPlayingYogaAnimation()
-    return IsPedUsingScenario(PlayerPedId(), "WORLD_HUMAN_YOGA")
-end
+local isYogaAnimationPlaying = false
+local isYogaCancelled = false
 
 RegisterNetEvent('yoga:startYoga')
 AddEventHandler('yoga:startYoga', function()
@@ -93,31 +90,41 @@ AddEventHandler('yoga:startYoga', function()
     end
 
     local amount = Config.StressRemoval
-
     isYogaAnimationPlaying = true
+    isYogaCancelled = false
+
+    QBCore.Functions.Progressbar("yoga_progress", "Doing Yoga", 35000, false, true, 
+        {}, 
+        {}, 
+        {}, {}, 
+        function()
+            if not isYogaCancelled then
+                TriggerServerEvent('hud:server:RelieveStress', amount)
+            end
+            isYogaAnimationPlaying = false
+            ClearPedTasks(ped)
+        end, 
+        function() 
+            isYogaCancelled = true
+            isYogaAnimationPlaying = false
+            ClearPedTasks(ped)
+        end
+    )
 
     TaskStartScenarioInPlace(ped, "WORLD_HUMAN_YOGA", 0, true)
 
-    local animationTimer = GetGameTimer()
-
-    while isYogaAnimationPlaying do
-        Citizen.Wait(100)
-
-        if GetGameTimer() - animationTimer > 35000 then
-            break
-        elseif not IsPlayingYogaAnimation() then
-            TriggerEvent('yoga:cancelYoga')
-            return
+    Citizen.CreateThread(function()
+        while isYogaAnimationPlaying do
+            Citizen.Wait(0)
+            if IsControlJustPressed(0, 73) then
+                TriggerEvent('progressbar:client:cancel')
+                isYogaCancelled = true
+                break
+            end
         end
-    end
-
-    if isYogaAnimationPlaying then
-        TriggerServerEvent('hud:server:RelieveStress', amount)
-    end
-
-    isYogaAnimationPlaying = false
-    ClearPedTasks(ped)
+    end)
 end)
+
 
 RegisterNetEvent('yoga:checkYogaAnimation')
 AddEventHandler('yoga:checkYogaAnimation', function()
